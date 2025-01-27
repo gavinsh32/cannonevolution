@@ -1,5 +1,5 @@
 # cannonevolution
-Project 1 for CS 
+Project 1 for CS415
 ## Overview
 Evolve cannons to find ones that can hit a target.
 ## Cannon Specification
@@ -9,5 +9,5 @@ Write how the evolution engine will work here.
 ## Tools
 Processing 4.3.2 - Python
 ## Authors
-Gavin Haynes
+Gavin Haynes,
 Samuel Beal 
