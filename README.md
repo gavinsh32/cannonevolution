@@ -11,3 +11,9 @@ Processing 4.3.2 - Python
 ## Authors
 Gavin Haynes,
 Samuel Beal 
+
+### Research Paper
+> [https://www.overleaf.com/read/xfyvdqcddvvy#1d06e1](url)
+### More resources
+> [https://www.youtube.com/watch?v=Xk3BHf9imCU](url)
+> 
