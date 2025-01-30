@@ -13,7 +13,7 @@ class Simulator:
 
     # Init a simulation environment with a population of cannons
     def __init__(self, population):
-        self.population = population
+        self.population = population.toList()
 
     # Init a target from the bottom left corner
     def initTarget(self, x1, y1, w):
@@ -22,10 +22,31 @@ class Simulator:
     def initBounds(self, w, h):
         self.dimensions = (w, h)
 
-    # Fire all cannons and return a list
-    def fire(self, t):
-        pass
+    # Fire all cannons, checking each step until all projectiles have either hit the target or fallen out of bounds
+    def fire(self, step=0.1, max=3):
+        hitTarget = []
+        hitBounds = []
+        t = 0.0
+        # While there are still cannons, remove if hit target or bounds
+        while len(self.population) > 0:
+            # Fire each cannon each time step
+            for cannon in self.population:
+                result = cannon.fire(t)
+                if self.inTarget(result):   # Hit target
+                    hitTarget.append(cannon)
+                    self.population.remove(cannon)
+                if not self.inBounds(result):
+                    hitBounds.append(cannon)
+                    self.population.remove(cannon)
+            t += step
+        print("Results:")
+        print(len(hitTarget), "hit the target")
+        print(len(hitBounds), 'hit the simulator bounds')
+        return hitTarget, hitBounds, t
     
+    def getPopulation(self):
+        return self.population
+
     # Check if the projectile is in the target
     def inTarget(self, coord):
         x, y = coord
@@ -36,7 +57,7 @@ class Simulator:
     def inBounds(self, coord):
         x, y = coord
         w, h = self.dimensions
-        return x > 0 and x < w and y > 0 and y < h
+        return x >= 0 and x <= w and y >= 0 and y <= h
 
     # Snap a coordinate to simulator bounds
     def snapToBounds(self, coord):
@@ -50,6 +71,12 @@ class Simulator:
 
 population = population.Population()
 simulator = Simulator(population)
-simulator.initBounds(50, 50)
-simulator.initTarget(45, 5, 5)
-print(simulator.fire(2))
+simulator.initBounds(75, 75)
+simulator.initTarget(10, 0, 10)
+hit, out, t = simulator.fire()
+targetc = simulator.target[0] + simulator.target[2], simulator.target[1] + simulator.target[3]
+for cannon in out:
+    tx, ty = targetc
+    x, y = cannon.fire(t)
+    dist = math.sqrt((ty-y)**2 + (tx-x)**2)
+    print(dist)
