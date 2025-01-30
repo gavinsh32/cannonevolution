@@ -17,12 +17,25 @@ class Population:
             self.population = existingPopulation
     
     # Fire all cannons and get the coordinates of each at time t
-    def fire(self, t):
+    def fire(self, t: float):
         coords = []
         for cannon in self.population:
             coords.append(cannon.fire(t))
         return coords
     
+    # Mutate n characters in both tilt and power gene for all cannons
+    def mutateAll(self, n):
+        for cannon in self.population:
+            cannon.mutateAll(n)
+
+    def mutateTilt(self, n):
+        for cannon in self.population:
+            cannon.mutateTilt(n)
+
+    def mutatePower(self, n):
+        for cannon in self.population:
+            cannon.mutatePower(n)
+
     # Get a list of all cannon entities in population.
     def toList(self):
         return self.population
@@ -54,9 +67,3 @@ class Population:
         for cannon in self.population:
             velocities.append(cannon.getVelocity())
         return velocities
-
-cannon = cannon.Cannon()
-print(cannon.getStats())
-cannon.mutateTilt(10)
-cannon.mutatePower(10)
-print(cannon.getStats())

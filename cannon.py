@@ -28,7 +28,7 @@ class Cannon:
         power = 0
         for i in range(0, GENE_LEN):
             tilt += 1 if self.tiltGene[i] == 'A' else 0
-            power += 1 if self.powerGene[i] == 'A' else 0
+            power += 0.5 if self.powerGene[i] == 'A' else 0
         return (float(tilt), float(power))
 
     # Decompose tilt and power in to x and y velocities.
