@@ -16,7 +16,7 @@ class Cannon:
     y = 0
 
     # Initialize a new Cannon entity with random genes and a position.
-    def __init__(self, x, y):
+    def __init__(self, x=0, y=0):
         self.tiltGene = [('A' if random.randint(0, 1) == 1 else 'C') for i in range(0, GENE_LEN)]
         self.powerGene = [('A' if random.randint(0, 1) == 1 else 'C') for i in range(0, GENE_LEN)]
         self.x = x
@@ -44,7 +44,31 @@ class Cannon:
         g = 9.81
         xf = x0 + vx*t
         yf = y0 + vy*t - (g * t ** 2) / 2
-        return (xf, yf)
+        return (int(xf), int(yf))
+    
+    def mutateAll(self, n):
+        self.mutateTilt(n)
+        self.mutatePower(n)
+
+    # Randomly mutate between c1 and c2 number of genes
+    def mutateTilt(self, n):  
+        # Make a random range of positions in genome
+        c = [random.randint(0, GENE_LEN-1) for i in range(0, n)]
+        for i in c:
+            if self.tiltGene[i] == 'A':
+                self.tiltGene[i] = 'C'
+            else:
+                self.tiltGene[i] = 'A'
+
+    # Randomly mutate between c1 and c2 number of genes
+    def mutatePower(self, n):  
+        # Make a random range of positions in genome
+        c = [random.randint(0, GENE_LEN-1) for i in range(0, n)]
+        for i in c:
+            if self.powerGene[i] == 'A':
+                self.powerGene[i] = 'C'
+            else:
+                self.powerGene[i] = 'A'
 
     def getVelocity(self):
         return self.decompose()
