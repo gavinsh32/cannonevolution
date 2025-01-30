@@ -74,7 +74,7 @@ simulator = Simulator(population)
 simulator.initBounds(75, 75)
 simulator.initTarget(10, 0, 10)
 hit, out, t = simulator.fire()
-targetc = simulator.target[0] + simulator.target[2], simulator.target[1] + simulator.target[3]
+targetc = (simulator.target[0] + simulator.target[2]) / 2, (simulator.target[1] + simulator.target[3]) / 2
 for cannon in out:
     tx, ty = targetc
     x, y = cannon.fire(t)
