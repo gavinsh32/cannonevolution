@@ -20,6 +20,13 @@ class Population:
         velocities = []
         for cannon in self.population:
             velocities.append(cannon.getVelocity())
+        return velocities
+    
+    def fire(self, t):
+        coords = []
+        for cannon in self.population:
+            coords.append(cannon.fire(t))
+        return coords
 
 population = Population(100, 0, 0)
-print(population.getStats())
+print(population.fire(0.1))
