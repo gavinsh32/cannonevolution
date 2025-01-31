@@ -30,6 +30,14 @@ class Cannon:
             tilt += 1 if self.tiltGene[i] == 'A' else 0
             power += 1 if self.powerGene[i] == 'A' else 0
         return (float(tilt), float(power))
+    
+    def copy(self):
+        temp = Cannon(self.x, self.y)
+        temp.setTiltGene(self.getTiltGene())
+        temp.setPowerGene(self.getPowerGene())
+        temp.x = self.x
+        temp.y = self.y
+        return temp
 
     # Decompose tilt and power in to x and y velocities.
     def decompose(self):
@@ -81,3 +89,9 @@ class Cannon:
 
     def getPowerGene(self):
         return self.powerGene
+    
+    def setTiltGene(self, newGene):
+        self.tiltGene = newGene
+
+    def setPowerGene(self, newGene):
+        self.powerGene = newGene

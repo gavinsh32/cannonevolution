@@ -6,14 +6,22 @@ import cannon
 import math
 import random
 
+# Fire cannons
+# Should remove population as it just overcomplicates it
+# while checking collision at each step:
+#   if hit the target, add to success list
+#   if fell out of bounds, check error distance
+# select all success cannons and some that missed
+# reproduce
+
 class Simulator:
     population = []
     target = (0, 0, 0, 0)
     dimensions = (100, 100)
 
     # Init a simulation environment with a population of cannons
-    def __init__(self, population):
-        self.population = population.toList()
+    def __init__(self, n=100, x=0, y=0):
+        self.population = [cannon.Cannon(x, y) for i in range(0, n)]
 
     # Init a target from the bottom left corner
     def initTarget(self, x1, y1, w):
@@ -21,6 +29,9 @@ class Simulator:
 
     def initBounds(self, w, h):
         self.dimensions = (w, h)
+
+    def setPopulation(self, newPop):
+        self.population = newPop
 
     # Fire all cannons, checking each step until all projectiles have either hit the target or fallen out of bounds
     def fire(self, step=0.1, max=3):
@@ -36,6 +47,7 @@ class Simulator:
                     hitTarget.append(cannon)
                     self.population.remove(cannon)
                 if not self.inBounds(result):
+                    #print('Hit bounds at', result)
                     hitBounds.append(cannon)
                     self.population.remove(cannon)
             t += step
@@ -44,6 +56,25 @@ class Simulator:
         print(len(hitBounds), 'hit the simulator bounds')
         return hitTarget, hitBounds, t
     
+    def reproduce(self, n):
+        for i in range(0, len(self.population)):
+            for j in range(0, random.randint(0, n)):
+                self.population.append(self.population[i].copy())
+
+    # Mutate n characters in both tilt and power gene for all cannons
+    def mutateAll(self, n):
+        for cannon in self.population:
+            cannon.mutateTilt(n)
+            cannon.mutatePower(n)
+
+    def mutateTilt(self, n):
+        for cannon in self.population:
+            cannon.mutateTilt(n)
+
+    def mutatePower(self, n):
+        for cannon in self.population:
+            cannon.mutatePower(n)
+
     def getPopulation(self):
         return self.population
 
@@ -69,14 +100,23 @@ class Simulator:
         if y > h: y = h
         return (x, y)
 
-population = population.Population()
-simulator = Simulator(population)
-simulator.initBounds(75, 75)
-simulator.initTarget(10, 0, 10)
-hit, out, t = simulator.fire()
-targetc = (simulator.target[0] + simulator.target[2]) / 2, (simulator.target[1] + simulator.target[3]) / 2
-for cannon in out:
-    tx, ty = targetc
-    x, y = cannon.fire(t)
-    dist = math.sqrt((ty-y)**2 + (tx-x)**2)
-    print(dist)
+# Init 100 cannons at 0, 0
+sim = Simulator(100, 0, 0)
+sim.initBounds(100, 100)
+sim.initTarget(40, 40, 10)
+last = []
+
+for i in range(0, 5):
+    print('\nGeneration', i)
+    hit, out, t = sim.fire()
+    last = hit
+    sim.setPopulation(hit)
+    sim.reproduce(6)
+    sim.mutateAll(5)
+
+# for i in range(0, epocs):
+#   1. generate population
+#   2. fire cannons -> get those that hit target, those that went out of bounds
+#   3. collect stats
+#   4. replicate cannons that hit and form a new population
+#   5. mutate
