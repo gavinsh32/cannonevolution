@@ -6,6 +6,9 @@ import cannon
 import math
 import random
 
+import pandas as pd
+import matplotlib as plt
+
 # Fire cannons
 # Should remove population as it just overcomplicates it
 # while checking collision at each step:
@@ -113,6 +116,32 @@ for i in range(0, 5):
     sim.setPopulation(hit)
     sim.reproduce(6)
     sim.mutateAll(5)
+
+# data = {
+#     'distance': distance,
+#     'time': time
+# }
+# df = pd.DataFrame(data)
+
+# df.plot(x='time', y='distance', kind='line', 
+#         title='Distance Over Time', 
+#         xlabel='Time (iterations)', 
+#         ylabel='Distance', 
+#         grid=True, 
+#         figsize=(8, 5))
+
+# # for distance in hit_dist:
+# #     #point = df[df['distance'] == distance]
+# #     #plt.scatter(point['time'], point['distance'], color='red', s=100, label=f'Hit: {time}')
+# #     plt.axhline(y=distance, color='red', linestyle='--', label=f'Hit Distance: {distance}m')
+
+# for distance in hit_dist:
+#     point = df[df['distance'] == distance]
+#     plt.scatter(point['generations', point['distance'], color='red', s=100, label=f'Hit: {distance}'])
+
+# # Display the plot
+# plt.savefig("plot.png")
+# print("Plot saved to plot.png")
 
 # for i in range(0, epocs):
 #   1. generate population
