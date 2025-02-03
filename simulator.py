@@ -6,14 +6,6 @@ import cannon
 import math
 import random
 
-# Fire cannons
-# Should remove population as it just overcomplicates it
-# while checking collision at each step:
-#   if hit the target, add to success list
-#   if fell out of bounds, check error distance
-# select all success cannons and some that missed
-# reproduce
-
 class Simulator:
     population = []
     target = (0, 0, 0, 0)
@@ -51,9 +43,9 @@ class Simulator:
                     hitBounds.append(cannon)
                     self.population.remove(cannon)
             t += step
-        print("Results:")
-        print(len(hitTarget), "hit the target")
-        print(len(hitBounds), 'hit the simulator bounds')
+        #print("Results:")
+        #print(len(hitTarget), "hit the target")
+        #print(len(hitBounds), 'hit the simulator bounds')
         return hitTarget, hitBounds, t
     
     def reproduce(self, n):
@@ -67,6 +59,7 @@ class Simulator:
             cannon.mutateTilt(n)
             cannon.mutatePower(n)
 
+    # Mutate randomly between 0 to n genes in each cannon in population
     def mutateTilt(self, n):
         for cannon in self.population:
             cannon.mutateTilt(n)
@@ -75,6 +68,7 @@ class Simulator:
         for cannon in self.population:
             cannon.mutatePower(n)
 
+    # Get population (list of cannons)
     def getPopulation(self):
         return self.population
 
@@ -104,19 +98,13 @@ class Simulator:
 sim = Simulator(100, 0, 0)
 sim.initBounds(100, 100)
 sim.initTarget(40, 40, 10)
-last = []
 
-for i in range(0, 5):
+generations = []
+for i in range(0, 10):
     print('\nGeneration', i)
     hit, out, t = sim.fire()
-    last = hit
-    sim.setPopulation(hit)
-    sim.reproduce(6)
-    sim.mutateAll(5)
-
-# for i in range(0, epocs):
-#   1. generate population
-#   2. fire cannons -> get those that hit target, those that went out of bounds
-#   3. collect stats
-#   4. replicate cannons that hit and form a new population
-#   5. mutate
+    phit = int(len(hit) / (len(out) + len(hit)) * 100)
+    print(phit, 'percent of cannons hit the target')
+    generations.append(hit)     # store successful cannons
+    sim.setPopulation(hit)      # set population to 'survivors'
+    sim.reproduce(5)
