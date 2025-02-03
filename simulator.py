@@ -7,7 +7,7 @@ import math
 import random
 
 import pandas as pd
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
 # Fire cannons
 # Should remove population as it just overcomplicates it
@@ -109,26 +109,36 @@ sim.initBounds(100, 100)
 sim.initTarget(40, 40, 10)
 last = []
 
-for i in range(0, 5):
+generations_fig = []
+targets_hit_fig = []
+
+for i in range(0, 10):
     print('\nGeneration', i)
     hit, out, t = sim.fire()
     last = hit
     sim.setPopulation(hit)
     sim.reproduce(6)
     sim.mutateAll(5)
+    generations_fig.append(i)
+    targets_hit_fig.append(len(hit))
 
-# data = {
-#     'distance': distance,
-#     'time': time
-# }
-# df = pd.DataFrame(data)
+data = {
+    'targets_hit': targets_hit_fig,
+    'time': generations_fig
+}
+df = pd.DataFrame(data)
 
-# df.plot(x='time', y='distance', kind='line', 
-#         title='Distance Over Time', 
-#         xlabel='Time (iterations)', 
-#         ylabel='Distance', 
-#         grid=True, 
-#         figsize=(8, 5))
+df.plot(x='time', y='targets_hit', kind='line', 
+        title='Targets Hit Over Time', 
+        xlabel='Time (Generations)', 
+        ylabel='Targets Hit', 
+        grid=True, 
+        figsize=(8, 5))
+
+# Display the plot
+plt.savefig("plot.png")
+print("Plot saved to plot.png")
+
 
 # # for distance in hit_dist:
 # #     #point = df[df['distance'] == distance]
