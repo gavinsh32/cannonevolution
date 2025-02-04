@@ -23,7 +23,7 @@ class Cannon:
         self.y = y
 
     # Count A's to calculate tilt and power.
-    def calcStats(self):
+    def getStats(self):
         tilt = 0
         power = 0
         for i in range(0, GENE_LEN):
@@ -40,14 +40,14 @@ class Cannon:
         return temp
 
     # Decompose tilt and power in to x and y velocities.
-    def decompose(self):
-        tilt, power = self.calcStats()
+    def getVelocity(self):
+        tilt, power = self.getStats()
         tilt = tilt * math.pi / 180     # convert tilt to rads
         return (power*math.cos(tilt), power*math.sin(tilt))
     
     # Calculate the position of the cannon's projectile after t seconds.
     def fire(self, t):
-        vx, vy = self.decompose()
+        vx, vy = self.getVelocity()
         x0, y0 = self.x, self.y
         g = 9.81
         xf = x0 + vx*t
@@ -77,12 +77,6 @@ class Cannon:
                 self.powerGene[i] = 'C'
             else:
                 self.powerGene[i] = 'A'
-
-    def getVelocity(self):
-        return self.decompose()
-
-    def getStats(self):
-        return self.calcStats()
 
     def getTiltGene(self):
         return self.tiltGene

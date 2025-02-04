@@ -15,13 +15,15 @@ class Simulator:
     def __init__(self, n=100, x=0, y=0):
         self.population = [cannon.Cannon(x, y) for i in range(0, n)]
 
-    # Init a target from the bottom left corner
+    # Init a square target from the bottom left corner
     def initTarget(self, x1, y1, w):
         self.target = (x1, y1, x1 + w, y1 + w)
 
+    # Init dimensions of simulator
     def initBounds(self, w, h):
         self.dimensions = (w, h)
 
+    # Set to a new list of cannons
     def setPopulation(self, newPop):
         self.population = newPop
 
@@ -43,15 +45,26 @@ class Simulator:
                     hitBounds.append(cannon)
                     self.population.remove(cannon)
             t += step
-        #print("Results:")
-        #print(len(hitTarget), "hit the target")
-        #print(len(hitBounds), 'hit the simulator bounds')
         return hitTarget, hitBounds, t
     
-    def reproduce(self, n):
-        for i in range(0, len(self.population)):
-            for j in range(0, random.randint(0, n)):
-                self.population.append(self.population[i].copy())
+    # Clone cannons in current population
+    def reproduce(self, n, a, b):
+        parents = self.copyPop()
+        children = []
+        for parent in parents:
+            for i in range(0, random.randint(0, n)):
+                child = parent.copy()
+                child.mutatePower(a)
+                child.mutateTilt(b)
+                children.append(child)
+                parents.append(child)
+        self.setPopulation(parents)
+
+    def copyPop(self):
+        temp = []
+        for cannon in self.getPopulation():
+            temp.append(cannon.copy())
+        return temp
 
     # Mutate n characters in both tilt and power gene for all cannons
     def mutateAll(self, n):
@@ -93,53 +106,20 @@ class Simulator:
         if y < 0: y = 0
         if y > h: y = h
         return (x, y)
+    
+    def getStats(self):
+        stats = []
+        for cannon in self.population:
+            stats.append(cannon.getStats())
 
 # Init 100 cannons at 0, 0
 sim = Simulator(100, 0, 0)
 sim.initBounds(100, 100)
 sim.initTarget(40, 40, 10)
 
-generations_fig = []
-targets_hit_fig = []
-
-for i in range(0, 5):
-    print('\nGeneration', i)
-    hit, out, t = sim.fire()
-    last = hit
+for epoch in range(0, 1):
+    hit, out, _ = sim.fire()
+    print(len(hit))
     sim.setPopulation(hit)
-    sim.reproduce(6)
-    generations_fig.append(i)
-    targets_hit_fig.append(len(hit))
-    success = len(hit) / (len(hit) + len(out)) * 100
-    print(success, 'percent hit target')
-
-#data = {
-#    'targets_hit': targets_hit_fig,
-#    'time': generations_fig
-#}
-#df = pd.DataFrame(data)
-
-#df.plot(x='time', y='targets_hit', kind='line', 
-#        title='Targets Hit Over Time', 
-#        xlabel='Time (Generations)', 
-#        ylabel='Targets Hit', 
-#        grid=True, 
-#        figsize=(8, 5))
-
-# Display the plot
-#plt.savefig("plot.png")
-#print("Plot saved to plot.png")
-
-
-# # for distance in hit_dist:
-# #     #point = df[df['distance'] == distance]
-# #     #plt.scatter(point['time'], point['distance'], color='red', s=100, label=f'Hit: {time}')
-# #     plt.axhline(y=distance, color='red', linestyle='--', label=f'Hit Distance: {distance}m')
-
-# for distance in hit_dist:
-#     point = df[df['distance'] == distance]
-#     plt.scatter(point['generations', point['distance'], color='red', s=100, label=f'Hit: {distance}'])
-
-# # Display the plot
-# plt.savefig("plot.png")
-# print("Plot saved to plot.png")
+    sim.reproduce(10, 0, 0)
+    print(len(sim.getPopulation()))
