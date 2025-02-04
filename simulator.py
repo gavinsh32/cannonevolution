@@ -102,32 +102,33 @@ sim.initTarget(40, 40, 10)
 generations_fig = []
 targets_hit_fig = []
 
-for i in range(0, 10):
+for i in range(0, 5):
     print('\nGeneration', i)
     hit, out, t = sim.fire()
     last = hit
     sim.setPopulation(hit)
     sim.reproduce(6)
-    sim.mutateAll(5)
     generations_fig.append(i)
     targets_hit_fig.append(len(hit))
+    success = len(hit) / (len(hit) + len(out)) * 100
+    print(success, 'percent hit target')
 
-data = {
-    'targets_hit': targets_hit_fig,
-    'time': generations_fig
-}
-df = pd.DataFrame(data)
+#data = {
+#    'targets_hit': targets_hit_fig,
+#    'time': generations_fig
+#}
+#df = pd.DataFrame(data)
 
-df.plot(x='time', y='targets_hit', kind='line', 
-        title='Targets Hit Over Time', 
-        xlabel='Time (Generations)', 
-        ylabel='Targets Hit', 
-        grid=True, 
-        figsize=(8, 5))
+#df.plot(x='time', y='targets_hit', kind='line', 
+#        title='Targets Hit Over Time', 
+#        xlabel='Time (Generations)', 
+#        ylabel='Targets Hit', 
+#        grid=True, 
+#        figsize=(8, 5))
 
 # Display the plot
-plt.savefig("plot.png")
-print("Plot saved to plot.png")
+#plt.savefig("plot.png")
+#print("Plot saved to plot.png")
 
 
 # # for distance in hit_dist:
@@ -142,10 +143,3 @@ print("Plot saved to plot.png")
 # # Display the plot
 # plt.savefig("plot.png")
 # print("Plot saved to plot.png")
-
-# for i in range(0, epocs):
-#   1. generate population
-#   2. fire cannons -> get those that hit target, those that went out of bounds
-#   3. collect stats
-#   4. replicate cannons that hit and form a new population
-#   5. mutate
