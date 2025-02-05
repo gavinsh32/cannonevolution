@@ -30,11 +30,19 @@ class Simulator:
     # Fire all cannons, checking each step until all projectiles have either hit the target or fallen out of bounds
     def fire(self, step=0.1, max=3):
         hit = []
+        minDist = [1000000000.0] * len(self.getPopulation())
+
         # For each cannon in population
-        for cannon in self.getPopulation():
+        for i in range(0, len(self.getPopulation())):
+            cannon = self.getPopulation()[i]
             t = 0
             while t < max:
                 result = cannon.fire(t)
+
+                dist = self.distToTarget(result)
+                if dist < minDist[i]:
+                    minDist[i] = dist
+
                 if self.inTarget(result):
                     hit.append(cannon)
                     break
@@ -42,8 +50,16 @@ class Simulator:
                     break
                 t += step
 
-        return hit
+        return hit, minDist
     
+    # Select all cannons from a population under a threshold t
+    def select(self, thresh, cannons, dists):
+        selected = []
+        for i in range(0, len(dists)):
+            if dists[i] <= thresh:
+                selected.append(cannons[i])
+        return selected
+
     # Clone all cannons in current population
     def reproduce(self, n, a, b):
         parents = self.copy()
@@ -84,7 +100,7 @@ class Simulator:
     # Check if the projectile is in the target
     def inTarget(self, coord):
         x, y = coord
-        x0, y0, x1, y1 = self.target
+        x0, y0, x1, y1 = self.getTarget()
         return x > x0 and x < x1 and y > y0 and y < y1
 
     # Check if a coordinate is in bounds
@@ -108,20 +124,18 @@ class Simulator:
         for cannon in self.population:
             stats.append(cannon.getStats())
         return stats
+    
+    # Get target coordinates
+    def getTarget(self):
+        return self.target
+    
+    # Get the coords of the center of the target
+    def getTargetCenter(self):
+        x0, y0, x1, y1 = self.getTarget()
+        return (x1 + x0) / 2, (y1 + y0) / 2
 
-# Init 100 cannons at 0, 0
-sim = Simulator(100, 0, 0)
-sim.initBounds(100, 100)
-sim.initTarget(40, 40, 20)
-
-generations = []
-
-for epoch in range(0, 10):
-    prev = sim.copy()           # Initial population
-    generations.append(prev) 
-    hit = sim.fire(0.2, 4)
-    succ = len(hit) / len(prev) * 100
-    print('Generation', epoch, 'success:', succ)
-    sim.setPopulation(hit)
-    sim.reproduce(2, 0, 0)
-    print(len(sim.getPopulation()))
+    # Find the distance from a coordinate to the center of the target
+    def distToTarget(self, coord):
+        tx, ty = self.getTargetCenter()
+        x, y = coord
+        return 0 if self.inTarget(coord) else math.sqrt((ty-y)**2 + (tx-x)**2)
