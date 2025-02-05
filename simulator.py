@@ -29,27 +29,24 @@ class Simulator:
 
     # Fire all cannons, checking each step until all projectiles have either hit the target or fallen out of bounds
     def fire(self, step=0.1, max=3):
-        hitTarget = []
-        hitBounds = []
-        t = 0.0
-        # While there are still cannons, remove if hit target or bounds
-        while len(self.population) > 0:
-            # Fire each cannon each time step
-            for cannon in self.population:
+        hit = []
+        # For each cannon in population
+        for cannon in self.getPopulation():
+            t = 0
+            while t < max:
                 result = cannon.fire(t)
-                if self.inTarget(result):   # Hit target
-                    hitTarget.append(cannon)
-                    self.population.remove(cannon)
-                if not self.inBounds(result):
-                    #print('Hit bounds at', result)
-                    hitBounds.append(cannon)
-                    self.population.remove(cannon)
-            t += step
-        return hitTarget, hitBounds, t
+                if self.inTarget(result):
+                    hit.append(cannon)
+                    break
+                elif not self.inBounds(result):
+                    break
+                t += step
+
+        return hit
     
-    # Clone cannons in current population
+    # Clone all cannons in current population
     def reproduce(self, n, a, b):
-        parents = self.copyPop()
+        parents = self.copy()
         children = []
         for parent in parents:
             for i in range(0, random.randint(0, n)):
@@ -57,10 +54,9 @@ class Simulator:
                 child.mutatePower(a)
                 child.mutateTilt(b)
                 children.append(child)
-                parents.append(child)
-        self.setPopulation(parents)
+        self.setPopulation(parents + children)
 
-    def copyPop(self):
+    def copy(self):
         temp = []
         for cannon in self.getPopulation():
             temp.append(cannon.copy())
@@ -111,15 +107,21 @@ class Simulator:
         stats = []
         for cannon in self.population:
             stats.append(cannon.getStats())
+        return stats
 
 # Init 100 cannons at 0, 0
 sim = Simulator(100, 0, 0)
 sim.initBounds(100, 100)
-sim.initTarget(40, 40, 10)
+sim.initTarget(40, 40, 20)
 
-for epoch in range(0, 1):
-    hit, out, _ = sim.fire()
-    print(len(hit))
+generations = []
+
+for epoch in range(0, 10):
+    prev = sim.copy()           # Initial population
+    generations.append(prev) 
+    hit = sim.fire(0.2, 4)
+    succ = len(hit) / len(prev) * 100
+    print('Generation', epoch, 'success:', succ)
     sim.setPopulation(hit)
-    sim.reproduce(10, 0, 0)
+    sim.reproduce(2, 0, 0)
     print(len(sim.getPopulation()))
