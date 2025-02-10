@@ -5,6 +5,7 @@ import random
 import cannon
 
 # Defines a population of cannons to be evolved, mimics many cannon function but as a group
+popSize = 100
 class Population:
     population = [] # list of cannons
 
@@ -15,7 +16,49 @@ class Population:
             self.population = [cannon.Cannon(x, y) for i in range(0, n)]
         else:
             self.population = existingPopulation
-    
+
+        self.bestFit = 0 # best fitness
+        self.best = 0 # index of best individual
+        self.avgFit = 0
+        self.calcStats()
+        
+
+    def generation(self):
+        tempPop = Population()
+        for i in range(0, popSize, 2):
+            p1 = Population()
+            p2 = Population()
+            tempPop.population[i].copy(self.population[p1])
+            tempPop.population[i+1].copy(self.population[p2])
+            tempPop.population[i].crossoverAll(tempPop.population[i+1])
+            tempPop.population[i].mutateAll()
+            tempPop.population[i+1].mutateAll()
+        for i in range(0,popSize):
+            self.population[i].copy(tempPop.population[i])
+
+    def tourn(self):
+        best = random.randint(0,popSize-1) # the winner so far
+        bestfit = self.population[0].fitness # best fit so far
+        for i in range(5): # tournament size of 6!!!!
+            p2 = random.randint(0,popSize-1)
+            if(self.population[p2].fitness > bestfit):
+                bestfit = self.population[p2].fitness
+                best = p2
+        return best
+
+    def calcStats(self):
+        self.avgFit = 0
+        self.population[0].calcStats()
+        self.bestFit = self.population[0].fitness
+        self.best = 0
+        for i in range(len(self.population)):
+            self.population[i].calcStats() # update fitnesses
+            if(self.population[i].fitness > self.bestFit): # compare fitness to best
+                self.bestFit = self.population[i].fitness
+                self.best = i
+            self.avgFit += self.population[i].fitness
+        self.avgFit = self.avgFit/len(self.population)
+
     # Fire all cannons and get the coordinates of each at time t
     def fire(self, t: float):
         coords = []

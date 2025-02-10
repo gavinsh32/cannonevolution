@@ -7,6 +7,7 @@ import random
 import math
 
 GENE_LEN = 90
+bases = ['A', 'C']
 
 # Cannon entity simulates a projectile launcher
 class Cannon:
@@ -21,6 +22,7 @@ class Cannon:
         self.powerGene = [('A' if random.randint(0, 1) == 1 else 'C') for i in range(0, GENE_LEN)]
         self.x = x
         self.y = y
+        self.fitness = 0
 
     # Count A's to calculate tilt and power.
     def calcStats(self):
@@ -29,6 +31,7 @@ class Cannon:
         for i in range(0, GENE_LEN):
             tilt += 1 if self.tiltGene[i] == 'A' else 0
             power += 1 if self.powerGene[i] == 'A' else 0
+        self.fitness = tilt+power
         return (float(tilt), float(power))
     
     def copy(self):
@@ -61,22 +64,42 @@ class Cannon:
     # Randomly mutate between c1 and c2 number of genes
     def mutateTilt(self, n):  
         # Make a random range of positions in genome
-        c = [random.randint(0, GENE_LEN-1) for i in range(0, n)]
-        for i in c:
-            if self.tiltGene[i] == 'A':
-                self.tiltGene[i] = 'C'
-            else:
-                self.tiltGene[i] = 'A'
+        # c = [random.randint(0, GENE_LEN-1) for i in range(0, n)]
+        # for i in c:
+        #     if self.tiltGene[i] == 'A':
+        #         self.tiltGene[i] = 'C'
+        #     else:
+        #         self.tiltGene[i] = 'A'
+        self.tiltGene[random.randint(0, GENE_LEN-1)] = random.choice(bases)
 
     # Randomly mutate between c1 and c2 number of genes
     def mutatePower(self, n):  
         # Make a random range of positions in genome
-        c = [random.randint(0, GENE_LEN-1) for i in range(0, n)]
-        for i in c:
-            if self.powerGene[i] == 'A':
-                self.powerGene[i] = 'C'
-            else:
-                self.powerGene[i] = 'A'
+        # c = [random.randint(0, GENE_LEN-1) for i in range(0, n)]
+        # for i in c:
+        #     if self.powerGene[i] == 'A':
+        #         self.powerGene[i] = 'C'
+        #     else:
+        #         self.powerGene[i] = 'A'
+        self.powerGene[random.randint(0, GENE_LEN-1)] = random.choice(bases)
+
+    def crossoverAll(self, self2):
+        self.crossoverPower(self2)
+        self.crossoverTilt(self2)
+
+    def crossoverPower(self, self2):
+        crossPoint = random.randint(0, GENE_LEN-1)
+        for i in range(crossPoint, GENE_LEN-1):
+            temp = self.powerGene[i]
+            self.powerGene[i] = self2.powerGene[i]
+            self2.powerGene[i] = temp
+
+    def crossoverTilt(self, self2):
+        crossPoint = random.randint(0, GENE_LEN-1)
+        for i in range(crossPoint, GENE_LEN-1):
+            temp = self.tiltGene[i]
+            self.tiltGene[i] = self2.tiltGene[i]
+            self2.tiltGene[i] = temp
 
     def getVelocity(self):
         return self.decompose()

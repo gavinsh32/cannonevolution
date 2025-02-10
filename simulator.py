@@ -1,7 +1,7 @@
 # simulator.py
 # Handles the environment where cannons "shoot"
 
-import population
+from population import Population
 import cannon
 import math
 import random
@@ -14,6 +14,7 @@ class Simulator:
     # Init a simulation environment with a population of cannons
     def __init__(self, n=100, x=0, y=0):
         self.population = [cannon.Cannon(x, y) for i in range(0, n)]
+        #self.population = Population()
 
     # Init a target from the bottom left corner
     def initTarget(self, x1, y1, w):
@@ -31,17 +32,17 @@ class Simulator:
         hitBounds = []
         t = 0.0
         # While there are still cannons, remove if hit target or bounds
-        while len(self.population) > 0:
+        while len(self.population.population) > 0:
             # Fire each cannon each time step
-            for cannon in self.population:
+            for cannon in self.population.population:
                 result = cannon.fire(t)
                 if self.inTarget(result):   # Hit target
                     hitTarget.append(cannon)
-                    self.population.remove(cannon)
+                    self.population.population.remove(cannon)
                 if not self.inBounds(result):
                     #print('Hit bounds at', result)
                     hitBounds.append(cannon)
-                    self.population.remove(cannon)
+                    self.population.population.remove(cannon)
             t += step
         #print("Results:")
         #print(len(hitTarget), "hit the target")
@@ -99,15 +100,34 @@ sim = Simulator(100, 0, 0)
 sim.initBounds(100, 100)
 sim.initTarget(40, 40, 10)
 
+p = Population()
+p.calcStats()
+
 generations_fig = []
 targets_hit_fig = []
 
 for i in range(0, 5):
+
+    sim.setPopulation(p)
+
     print('\nGeneration', i)
     hit, out, t = sim.fire()
     last = hit
-    sim.setPopulation(hit)
+
+    # sim.setPopulation(hit)
+    sim.population.generation()
+    sim.population.calcStats()
     sim.reproduce(6)
+    sim.mutateAll()
+    # p.generation()
+    # p.calcStats()
+    # sim.setPopulation(p)
+    # sim.reproduce(6)
+    # sim.mutateAll
+    # sim.setPopulation(hit)
+    # sim.reproduce(6)
+    # sim.mutateAll(i)
+
     generations_fig.append(i)
     targets_hit_fig.append(len(hit))
     success = len(hit) / (len(hit) + len(out)) * 100
