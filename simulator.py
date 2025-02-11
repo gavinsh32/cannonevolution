@@ -7,13 +7,12 @@ import math
 import random
 
 class Simulator:
-    population = []
     target = (0, 0, 0, 0)
     dimensions = (100, 100)
 
     # Init a simulation environment with a population of cannons
-    def __init__(self, n=100, x=0, y=0):
-        self.population = [cannon.Cannon(x, y) for i in range(0, n)]
+    def __init__(self):
+        pass
 
     # Init a square target from the bottom left corner
     def initTarget(self, x1, y1, w):
@@ -23,14 +22,13 @@ class Simulator:
     def initBounds(self, w, h):
         self.dimensions = (w, h)
 
-    # Set to a new list of cannons
-    def setPopulation(self, newPop):
-        self.population = newPop
+    def evolve(thresh, mA, mB):
+        pass
 
-    # Fire all cannons, checking each step until all projectiles have either hit the target or fallen out of bounds
-    def fire(self, step=0.1, max=3):
+    # Fire all cannons, recording the closest distance they came to the target
+    def fire(self, population : population, step=0.1, max=3):
         hit = []
-        minDist = [1000000000.0] * len(self.getPopulation())
+        minDist = [1000000 for i in range(0, self.getPopulation()).size()]
 
         # For each cannon in population
         for i in range(0, len(self.getPopulation())):
@@ -55,47 +53,10 @@ class Simulator:
     # Select all cannons from a population under a threshold t
     def select(self, thresh, cannons, dists):
         selected = []
-        for i in range(0, len(dists)):
+        for i in range(0, len(cannons)):
             if dists[i] <= thresh:
                 selected.append(cannons[i])
         return selected
-
-    # Clone all cannons in current population
-    def reproduce(self, n, a, b):
-        parents = self.copy()
-        children = []
-        for parent in parents:
-            for i in range(0, random.randint(0, n)):
-                child = parent.copy()
-                child.mutatePower(a)
-                child.mutateTilt(b)
-                children.append(child)
-        self.setPopulation(parents + children)
-
-    def copy(self):
-        temp = []
-        for cannon in self.getPopulation():
-            temp.append(cannon.copy())
-        return temp
-
-    # Mutate n characters in both tilt and power gene for all cannons
-    def mutateAll(self, n):
-        for cannon in self.population:
-            cannon.mutateTilt(n)
-            cannon.mutatePower(n)
-
-    # Mutate randomly between 0 to n genes in each cannon in population
-    def mutateTilt(self, n):
-        for cannon in self.population:
-            cannon.mutateTilt(n)
-
-    def mutatePower(self, n):
-        for cannon in self.population:
-            cannon.mutatePower(n)
-
-    # Get population (list of cannons)
-    def getPopulation(self):
-        return self.population
 
     # Check if the projectile is in the target
     def inTarget(self, coord):
@@ -118,12 +79,6 @@ class Simulator:
         if y < 0: y = 0
         if y > h: y = h
         return (x, y)
-    
-    def getStats(self):
-        stats = []
-        for cannon in self.population:
-            stats.append(cannon.getStats())
-        return stats
     
     # Get target coordinates
     def getTarget(self):

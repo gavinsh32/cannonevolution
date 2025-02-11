@@ -17,10 +17,13 @@ class Cannon:
 
     # Initialize a new Cannon entity with random genes and a position.
     def __init__(self, x=0, y=0):
-        self.tiltGene = [('A' if random.randint(0, 1) == 1 else 'C') for i in range(0, GENE_LEN)]
-        self.powerGene = [('A' if random.randint(0, 1) == 1 else 'C') for i in range(0, GENE_LEN)]
+        self.tiltGene = self.makeRandomGene()
+        self.powerGene = self.makeRandomGene()
         self.x = x
         self.y = y
+
+    def makeRandomGene(self):
+        return [('A' if random.randint(0, 1) == 1 else 'C') for i in range(0, GENE_LEN)]
 
     # Count A's to calculate tilt and power.
     def getStats(self):
@@ -35,8 +38,6 @@ class Cannon:
         temp = Cannon(self.x, self.y)
         temp.setTiltGene(self.getTiltGene())
         temp.setPowerGene(self.getPowerGene())
-        temp.x = self.x
-        temp.y = self.y
         return temp
 
     # Decompose tilt and power in to x and y velocities.
