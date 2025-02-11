@@ -23,7 +23,7 @@ class Simulator:
         self.dimensions = (w, h)
 
     # Fire all cannons, recording the closest distance they came to the target
-    def fire(self, pop : population, step=0.1, max=3):
+    def fire(self, pop : population, thresh, step=0.1, max=3):
         hit = []
         minDist = [1000000 for i in range(0, pop.size())]
 
@@ -45,7 +45,7 @@ class Simulator:
                     break
                 t += step
 
-        return hit, minDist
+        return self.select(thresh, hit, minDist)
     
     # Select all cannons from a population under a threshold t
     def select(self, thresh, cannons, dists):
@@ -53,7 +53,7 @@ class Simulator:
         for i in range(0, len(cannons)):
             if dists[i] <= thresh:
                 selected.append(cannons[i])
-        return selected
+        return population.Population(existing=selected)
 
     # Check if the projectile is in the target
     def inTarget(self, coord):
