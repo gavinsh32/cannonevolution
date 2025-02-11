@@ -22,17 +22,14 @@ class Simulator:
     def initBounds(self, w, h):
         self.dimensions = (w, h)
 
-    def evolve(thresh, mA, mB):
-        pass
-
     # Fire all cannons, recording the closest distance they came to the target
-    def fire(self, population : population, step=0.1, max=3):
+    def fire(self, pop : population, step=0.1, max=3):
         hit = []
-        minDist = [1000000 for i in range(0, self.getPopulation()).size()]
+        minDist = [1000000 for i in range(0, pop.size())]
 
         # For each cannon in population
-        for i in range(0, len(self.getPopulation())):
-            cannon = self.getPopulation()[i]
+        for i in range(0, pop.size()):
+            cannon = pop.at(i)
             t = 0
             while t < max:
                 result = cannon.fire(t)
