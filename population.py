@@ -71,11 +71,10 @@ class Population:
         # Convert percent to number of individuals
         num = int(self.size() * per / 100)
         
-        children = []
+        children = Population(0)
         for i in range(0, num):
             child = random.choice(self.getPop())
             children.append(child)
-            self.append(child)
 
         return Population(existing=children)
 
