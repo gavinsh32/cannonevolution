@@ -22,10 +22,11 @@ class Simulator:
     def initBounds(self, w, h):
         self.dimensions = (w, h)
 
-    # Fire all cannons, recording the closest distance they came to the target
-    def fire(self, pop : population, thresh, step=0.1, max=3):
-        hit = []
-        minDist = [1000000 for i in range(0, pop.size())]
+    # Fire all cannons, return all which come within some threshold of the target
+    def fire(self, pop : population, thresh: int, step=0.1, max=3):
+
+        hit = []    # Cannons which hit the target 
+        minDist = [1000000 for i in range(0, pop.size())]   # The closest they came to the target
 
         # For each cannon in population
         for i in range(0, pop.size()):
@@ -34,19 +35,25 @@ class Simulator:
             while t < max:
                 result = cannon.fire(t)
 
+                # Check if the cannon came closer to the target
                 dist = self.distToTarget(result)
                 if dist < minDist[i]:
                     minDist[i] = dist
 
+                # Cannon hit the target
                 if self.inTarget(result):
                     hit.append(cannon)
                     break
+
+                # Cannon went out of bounds
                 elif not self.inBounds(result):
-                    break
+                    minDist[i] = self.snapToBounds(result)
+
                 t += step
 
+        # Select individuals within the threshold
         return self.select(thresh, hit, minDist)
-    
+
     # Select all cannons from a population under a threshold t
     def select(self, thresh, cannons, dists):
         selected = []

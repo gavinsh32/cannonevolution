@@ -14,7 +14,7 @@ def main():
 
     for epoch in range(0, 10):
         print('Generation', epoch, 'population size', pop.size())
-        winners = sim.fire(pop, 100)
+        winners = sim.fire(pop, thresh=100)
         print(winners.size())
 
 if __name__ == '__main__':
