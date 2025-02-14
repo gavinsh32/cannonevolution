@@ -66,7 +66,7 @@ class Simulator:
     def inTarget(self, coord):
         x, y = coord
         x0, y0, x1, y1 = self.getTarget()
-        return x > x0 and x < x1 and y > y0 and y < y1
+        return x0 < x and x < x1 and y0 < y and y < y1
 
     # Check if a coordinate is in bounds
     def inBounds(self, coord):
