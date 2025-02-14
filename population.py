@@ -1,8 +1,10 @@
 # population.py
-
 import math
 import random
 import cannon
+
+#from main import psize
+psize = 1000
 
 # Defines a list of cannons, and extends cannon functionality to work on a population
 class Population:
@@ -15,6 +17,10 @@ class Population:
             self.population = [cannon.Cannon(x, y) for i in range(0, n)]
         else:
             self.setPop(existing)
+            
+        self.bestFit = 0 # best fitness
+        self.best = 0 # index of best individual
+        self.avgFit = 0
     
     # Fire all cannons and get the coordinates of each at time t
     def fire(self, t: float):
@@ -77,9 +83,12 @@ class Population:
         return Population(existing=children)
 
     # Join this population with another
+    # def join(self, population):
+    #     if population is not None:
+    #         self.setPop(self.getPop() + population.getPop())
     def join(self, population):
         if population is not None:
-            self.setPop(self.getPop() + population.getPop())
+            self.population.extend(population.getPop())  
 
     def append(self, cannon: cannon):
         if cannon is not None:
@@ -99,4 +108,40 @@ class Population:
     
     # Get the x and y velocities of all cannons.
     def getVelocities(self):
-        return [cannon.getVelocity() for cannon in self.getPop()]
+        return [cannon.getVelocity() for cannon in self.getPop()]    
+
+    # def generation(self):
+    #     tempPop = Population()
+    #     for i in range(0, psize, 2):
+    #         p1 = Population()
+    #         p2 = Population()
+    #         tempPop.population[i].copy(self.population[p1])
+    #         tempPop.population[i+1].copy(self.population[p2])
+    #         tempPop.population[i].crossoverAll(tempPop.population[i+1])
+    #         tempPop.population[i].mutateAll()
+    #         tempPop.population[i+1].mutateAll()
+    #     for i in range(0,psize):
+    #         self.population[i].copy(tempPop.population[i])
+
+    # def tourn(self):
+    #     best = random.randint(0,psize-1) # the winner so far
+    #     bestfit = self.population[0].fitness # best fit so far
+    #     for i in range(5): # tournament size of 6!!!!
+    #         p2 = random.randint(0,psize-1)
+    #         if(self.population[p2].fitness > bestfit):
+    #             bestfit = self.population[p2].fitness
+    #             best = p2
+    #     return best
+
+    # def calcStats(self):
+    #     self.avgFit = 0
+    #     self.population[0].calcStats()
+    #     self.bestFit = self.population[0].fitness
+    #     self.best = 0
+    #     for i in range(len(self.population)):
+    #         self.population[i].calcStats() # update fitnesses
+    #         if(self.population[i].fitness > self.bestFit): # compare fitness to best
+    #             self.bestFit = self.population[i].fitness
+    #             self.best = i
+    #         self.avgFit += self.population[i].fitness
+    #     self.avgFit = self.avgFit/len(self.population)
