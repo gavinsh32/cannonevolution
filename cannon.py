@@ -69,7 +69,8 @@ class Cannon:
         #         self.tiltGene[i] = 'C'
         #     else:
         #         self.tiltGene[i] = 'A'
-        self.tiltGene[random.randint(0, GENE_LEN-1)] = random.choice(bases)
+        for i in range(0, n):
+            self.tiltGene[random.randint(0, GENE_LEN-1)] = random.choice(bases)
 
     # Randomly mutate between c1 and c2 number of genes
     def mutatePower(self, n):  
@@ -80,7 +81,8 @@ class Cannon:
         #         self.powerGene[i] = 'C'
         #     else:
         #         self.powerGene[i] = 'A'
-        self.powerGene[random.randint(0, GENE_LEN-1)] = random.choice(bases)
+        for i in range(0, n):
+            self.powerGene[random.randint(0, GENE_LEN-1)] = random.choice(bases)
 
     def getTiltGene(self):
         return self.tiltGene
