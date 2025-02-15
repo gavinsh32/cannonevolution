@@ -9,21 +9,13 @@ import random
 
 import matplotlib.pyplot as plt
 import pandas
-#import numpy as np
 
 width = 100
 height = 100
 targetx = 50
 targety = 50
 targetw = 10
-#psize = 100
 gensize = 30
-
-#sim = simulator.Simulator()
-# sim.initBounds(width, height)
-# sim.initTarget(targetx, targety, width)
-
-#pop = population.Population(n=psize)
 
 def generation(psize, reproduction_rate):
     sim = simulator.Simulator()
@@ -53,14 +45,8 @@ def generation(psize, reproduction_rate):
         #print(children.getStats())
 
         # Mutate children
-        children.mutateTilt(5, 3)
-        children.mutatePower(5, 2)
-        # a = random.randint(1, 10)
-        # b = random.randint(1, 10)
-        # c = random.randint(1, 10)
-        # d = random.randint(1, 10)
-        # children.mutateTilt(a,b)
-        # children.mutatePower(c,d)
+        children.mutateTilt(1, 3)
+        children.mutatePower(1, 2)
 
         # Cull initial population
         pop.cull(5)
@@ -72,7 +58,9 @@ def generation(psize, reproduction_rate):
         # Repeat for each generation
     
 count = 0
-############################## EXPERIMENTS
+########### EXPERIMENTS ############
+# Takes number of generations and their success rate
+# prints into a graph using matplotlib and pandas. 
 time, success_rate = generation(100, 10)
 data = {'time': time, 'success_rate': success_rate }
 dataframe = pandas.DataFrame(data)
@@ -140,32 +128,3 @@ dataframe.plot(x='time', y='success_rate', kind='line',
 plt.savefig("plot5.png")
 print("Plot saved to plot.png")
 count +=1
-
-
-# # for distance in hit_dist:
-# #     #point = df[df['distance'] == distance]
-# #     #plt.scatter(point['time'], point['distance'], color='red', s=100, label=f'Hit: {time}')
-# #     plt.axhline(y=distance, color='red', linestyle='--', label=f'Hit Distance: {distance}m')
-
-# for distance in hit_dist:
-#     point = df[df['distance'] == distance]
-#     plt.scatter(point['generations', point['distance'], color='red', s=100, label=f'Hit: {distance}'])
-
-# # Display the plot
-# plt.savefig("plot.png")
-# print("Plot saved to plot.png")
-    
-    
-    
-    
-    # we cover 
-        # Fitness
-        # Selection 
-        # Reproduction
-        # Evolution 
-    
-    # Experiments:
-        # Reproduction Rate
-        # Cull rate
-        # Mutation rate
-        # Population size

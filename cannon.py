@@ -69,6 +69,7 @@ class Cannon:
         #         self.tiltGene[i] = 'C'
         #     else:
         #         self.tiltGene[i] = 'A'
+        # Random genes n times
         for i in range(0, n):
             self.tiltGene[random.randint(0, GENE_LEN-1)] = random.choice(bases)
 
@@ -81,6 +82,7 @@ class Cannon:
         #         self.powerGene[i] = 'C'
         #     else:
         #         self.powerGene[i] = 'A'
+        # Random genes n times
         for i in range(0, n):
             self.powerGene[random.randint(0, GENE_LEN-1)] = random.choice(bases)
 
