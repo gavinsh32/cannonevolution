@@ -62,13 +62,14 @@ count = 0
 ########### EXPERIMENTS ############
 # Takes number of generations and their success rate
 # prints into a graph using matplotlib and pandas. 
+
 time, success_rate = generation(100, 10)
 data = {'time': time, 'success_rate': success_rate }
 dataframe = pandas.DataFrame(data)
 dataframe.plot(x='time', y='success_rate', kind='line', 
        title='Population Size 100, Reproduce 10%, Cull 5%', 
        xlabel='Time (Generations)', 
-       ylabel='Distance to target', 
+       ylabel='% Hit Target', 
        grid=True, 
        figsize=(8, 7))
 plt.savefig("plot.png")
@@ -81,7 +82,7 @@ dataframe = pandas.DataFrame(data)
 dataframe.plot(x='time', y='success_rate', kind='line', 
        title='Population Size 1000, Reproduce 10%, Cull 5%', 
        xlabel='Time (Generations)', 
-       ylabel='Distance to target', 
+       ylabel='% Hit Target', 
        grid=True, 
        figsize=(8, 7))
 plt.savefig("plot2.png")
@@ -94,7 +95,7 @@ dataframe = pandas.DataFrame(data)
 dataframe.plot(x='time', y='success_rate', kind='line', 
        title='Population Size 500, Reproduce 10%, Cull 5%', 
        xlabel='Time (Generations)', 
-       ylabel='Distance to target', 
+       ylabel='% Hit Target', 
        grid=True, 
        figsize=(8, 7))
 plt.savefig("plot3.png")
@@ -110,7 +111,7 @@ dataframe = pandas.DataFrame(data)
 dataframe.plot(x='time', y='success_rate', kind='line', 
        title='Population Size 100, Reproduce 20%, Cull 5%', 
        xlabel='Time (Generations)', 
-       ylabel='Distance to target', 
+       ylabel='% Hit Target', 
        grid=True, 
        figsize=(8, 7))
 plt.savefig("plot4.png")
@@ -123,7 +124,7 @@ dataframe = pandas.DataFrame(data)
 dataframe.plot(x='time', y='success_rate', kind='line', 
        title='Population Size 1000, Reproduce 20%, Cull 5%', 
        xlabel='Time (Generations)', 
-       ylabel='Distance to target', 
+       ylabel='% Hit Target', 
        grid=True, 
        figsize=(8, 7))
 plt.savefig("plot5.png")
