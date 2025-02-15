@@ -27,32 +27,33 @@ def generation(psize, reproduction_rate):
     
     for epoch in range(0, gensize):
 
-        print('Generation', epoch, 'population size', pop.size())
-        time.append(epoch)
-        # Fire cannons, get a list of how close they came
-        result = sim.fire(pop)
+       print('Generation', epoch, 'population size', pop.size())
+       time.append(epoch)
+       # Fire cannons, get a list of how close they came
+       result = sim.fire(pop)
 
-        # Select fit individuals based on the closest each came to the target
-        fit = sim.select(pop, result, 10)
+       # Select fit individuals based on the closest each came to the target
+       fit = sim.select(pop, result, 10)
 
-        success = fit.size() / pop.size()
-        print('Success:', success)
-        success_rate.append(success)
-        
-        # Reproduce fit individuals
-        children = fit.reproduce(reproduction_rate)
+       success = fit.size() / pop.size()
+       print('Success:', success)
+       success_rate.append(success)
+       
+       # Reproduce fit individuals
+       children = fit.reproduce(reproduction_rate)
 
-        #print(children.getStats())
+       # This function prints out the stats of every child reproduced. 
+       #print(children.getStats())
 
-        # Mutate children
-        children.mutateTilt(1, 3)
-        children.mutatePower(1, 2)
+       # Mutate children
+       children.mutateTilt(1, 3)
+       children.mutatePower(1, 2)
 
-        # Cull initial population
-        pop.cull(5)
+       # Cull initial population
+       pop.cull(5)
 
-        # Add children to population
-        pop.join(children)
+       # Add children to population
+       pop.join(children)
 
     return time, success_rate
         # Repeat for each generation
