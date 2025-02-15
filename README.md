@@ -16,6 +16,3 @@ Samuel Beal
 
 ### Research Paper
 > [Research Paper PDF](https://github.com/gavinsh32/cannonevolution/blob/73e350f08c9680070c818b07addca7a32ede586b/cs455-project-1.pdf)
-### More resources
-> [https://www.youtube.com/watch?v=Xk3BHf9imCU](url)
-> 
