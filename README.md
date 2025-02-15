@@ -15,7 +15,7 @@ Gavin Haynes,
 Samuel Beal 
 
 ### Research Paper
-> [https://www.overleaf.com/read/xfyvdqcddvvy#1d06e1](url)
+> [https://github.com/gavinsh32/cannonevolution/blob/73e350f08c9680070c818b07addca7a32ede586b/cs455-project-1.pdf](url)
 ### More resources
 > [https://www.youtube.com/watch?v=Xk3BHf9imCU](url)
 > 
