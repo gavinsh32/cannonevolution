@@ -37,3 +37,6 @@ def analyze_sequence(children):
 
     print(power[similar_genome.index])
     print(tilt[similar_genome.index])
+    print(f"A count: {similar_genome.a}")
+    print(f"C count: {similar_genome.c}")
+    print(f"Similar score: {similar}")
