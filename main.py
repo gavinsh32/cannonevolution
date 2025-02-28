@@ -4,6 +4,7 @@
 
 import simulator
 import population
+import analyze
 import cannon
 import random
 
@@ -44,6 +45,9 @@ def generation(psize, reproduction_rate):
 
        # This function prints out the stats of every child reproduced. 
        #print(children.getStats())
+       analyze.analyze_sequence(children)
+       #print(children.getPowerGenes())
+       #print(children.getTiltGenes())
 
        # Mutate children
        children.mutateTilt(1, 3)
@@ -64,69 +68,69 @@ count = 0
 # prints into a graph using matplotlib and pandas. 
 
 time, success_rate = generation(100, 10)
-data = {'time': time, 'success_rate': success_rate }
-dataframe = pandas.DataFrame(data)
-dataframe.plot(x='time', y='success_rate', kind='line', 
-       title='Population Size 100, Reproduce 10%, Cull 5%', 
-       xlabel='Time (Generations)', 
-       ylabel='% Hit Target', 
-       grid=True, 
-       figsize=(8, 7))
-plt.savefig("plot.png")
-print("Plot saved to plot.png")
-count +=1
-##############################
-time, success_rate = generation(1000, 10)
-data = {'time': time, 'success_rate': success_rate }
-dataframe = pandas.DataFrame(data)
-dataframe.plot(x='time', y='success_rate', kind='line', 
-       title='Population Size 1000, Reproduce 10%, Cull 5%', 
-       xlabel='Time (Generations)', 
-       ylabel='% Hit Target', 
-       grid=True, 
-       figsize=(8, 7))
-plt.savefig("plot2.png")
-print("Plot saved to plot.png")
-count +=1
-##############################
-time, success_rate = generation(500, 10)
-data = {'time': time, 'success_rate': success_rate }
-dataframe = pandas.DataFrame(data)
-dataframe.plot(x='time', y='success_rate', kind='line', 
-       title='Population Size 500, Reproduce 10%, Cull 5%', 
-       xlabel='Time (Generations)', 
-       ylabel='% Hit Target', 
-       grid=True, 
-       figsize=(8, 7))
-plt.savefig("plot3.png")
-print("Plot saved to plot.png")
-count +=1
+# data = {'time': time, 'success_rate': success_rate }
+# dataframe = pandas.DataFrame(data)
+# dataframe.plot(x='time', y='success_rate', kind='line', 
+#        title='Population Size 100, Reproduce 10%, Cull 5%', 
+#        xlabel='Time (Generations)', 
+#        ylabel='% Hit Target', 
+#        grid=True, 
+#        figsize=(8, 7))
+# plt.savefig("plot.png")
+# print("Plot saved to plot.png")
+# count +=1
+# ##############################
+# time, success_rate = generation(1000, 10)
+# data = {'time': time, 'success_rate': success_rate }
+# dataframe = pandas.DataFrame(data)
+# dataframe.plot(x='time', y='success_rate', kind='line', 
+#        title='Population Size 1000, Reproduce 10%, Cull 5%', 
+#        xlabel='Time (Generations)', 
+#        ylabel='% Hit Target', 
+#        grid=True, 
+#        figsize=(8, 7))
+# plt.savefig("plot2.png")
+# print("Plot saved to plot.png")
+# count +=1
+# ##############################
+# time, success_rate = generation(500, 10)
+# data = {'time': time, 'success_rate': success_rate }
+# dataframe = pandas.DataFrame(data)
+# dataframe.plot(x='time', y='success_rate', kind='line', 
+#        title='Population Size 500, Reproduce 10%, Cull 5%', 
+#        xlabel='Time (Generations)', 
+#        ylabel='% Hit Target', 
+#        grid=True, 
+#        figsize=(8, 7))
+# plt.savefig("plot3.png")
+# print("Plot saved to plot.png")
+# count +=1
 
-# REPRODUCTION RATE
-##############################
-time, success_rate = generation(100, 20)
-data = {'time': time, 'success_rate': success_rate }
-dataframe = pandas.DataFrame(data)
+# # REPRODUCTION RATE
+# ##############################
+# time, success_rate = generation(100, 20)
+# data = {'time': time, 'success_rate': success_rate }
+# dataframe = pandas.DataFrame(data)
 
-dataframe.plot(x='time', y='success_rate', kind='line', 
-       title='Population Size 100, Reproduce 20%, Cull 5%', 
-       xlabel='Time (Generations)', 
-       ylabel='% Hit Target', 
-       grid=True, 
-       figsize=(8, 7))
-plt.savefig("plot4.png")
-print("Plot saved to plot.png")
-count +=1
-##############################
-time, success_rate = generation(1000, 20)
-data = {'time': time, 'success_rate': success_rate }
-dataframe = pandas.DataFrame(data)
-dataframe.plot(x='time', y='success_rate', kind='line', 
-       title='Population Size 1000, Reproduce 20%, Cull 5%', 
-       xlabel='Time (Generations)', 
-       ylabel='% Hit Target', 
-       grid=True, 
-       figsize=(8, 7))
-plt.savefig("plot5.png")
-print("Plot saved to plot.png")
-count +=1
+# dataframe.plot(x='time', y='success_rate', kind='line', 
+#        title='Population Size 100, Reproduce 20%, Cull 5%', 
+#        xlabel='Time (Generations)', 
+#        ylabel='% Hit Target', 
+#        grid=True, 
+#        figsize=(8, 7))
+# plt.savefig("plot4.png")
+# print("Plot saved to plot.png")
+# count +=1
+# ##############################
+# time, success_rate = generation(1000, 20)
+# data = {'time': time, 'success_rate': success_rate }
+# dataframe = pandas.DataFrame(data)
+# dataframe.plot(x='time', y='success_rate', kind='line', 
+#        title='Population Size 1000, Reproduce 20%, Cull 5%', 
+#        xlabel='Time (Generations)', 
+#        ylabel='% Hit Target', 
+#        grid=True, 
+#        figsize=(8, 7))
+# plt.savefig("plot5.png")
+# print("Plot saved to plot.png")
+# count +=1
