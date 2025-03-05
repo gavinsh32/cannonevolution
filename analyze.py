@@ -1,6 +1,6 @@
 from population import Population
 
-# saved_data = []
+saved_data = []
 
 class Data:
     def __init__(self):
@@ -26,7 +26,7 @@ def analyze_sequence(children):
 
     num = []
     index = 0
-
+   
     for i in range(len(power)):  # Fixed unpacking
 
         curr_data = Data()
@@ -76,15 +76,82 @@ def analyze_sequence(children):
     print(f"C count: {similar_power_genome.powerc}")
     print(f"Similar score: {similar_tilt}")
     print(f"Similar score: {similar_power}")
+    saved_data.append(num)
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+def graphs_generations(generations):
+    global saved_data
+
+    if not saved_data:  # Ensure there is data to process
+        print("No data available to plot.")
+        return
+
+    if not isinstance(generations, list) or not all(isinstance(x, int) for x in generations):
+        print("Error: generations must be a list of integers.")
+        return
+
+    # Extracting data from instances of Data class
+    power_a = [d.powera for sublist in saved_data for d in sublist]
+    power_c = [d.powerc for sublist in saved_data for d in sublist]
+    tilt_a = [d.tilta for sublist in saved_data for d in sublist]
+    tilt_c = [d.tiltc for sublist in saved_data for d in sublist]
+
+    # TRIM if needed
+    # Ensure we have enough data points to match the generations list
+    min_length = min(len(generations), len(power_a))
+    generations = generations[:min_length]
+    power_a = power_a[:min_length]
+    power_c = power_c[:min_length]
+    tilt_a = tilt_a[:min_length]
+    tilt_c = tilt_c[:min_length]
+
+    # Creating DataFrame
+    data = {'time': generations, 'power_a': power_a, 'power_c': power_c, 'tilt_a': tilt_a, 'tilt_c': tilt_c}
+    dataframe = pd.DataFrame(data)
+
+    # Plotting the data
+    dataframe.plot(x='time', y=['power_a', 'power_c', 'tilt_a', 'tilt_c'], kind='line', 
+                   title='Gene Count Over Time', 
+                   xlabel='Time (Generations)', 
+                   ylabel='Count', 
+                   grid=True, 
+                   figsize=(8, 7))
+
+    # Saving the plot
+    plt.savefig("analyze_generations.png")
+    plt.show()  # To display the graph in interactive environments
+    print("Plot saved to analyze.png")
 
 
-# data = {'time': time, 'success_rate': success_rate }
-# dataframe = pandas.DataFrame(data)
-# dataframe.plot(x='time', y='success_rate', kind='line', 
-#        title='Population Size 100, Reproduce 10%, Cull 5%', 
-#        xlabel='Time (Generations)', 
-#        ylabel='% Hit Target', 
-#        grid=True, 
-#        figsize=(8, 7))
-# plt.savefig("analyze.png")
-# print("Plot saved to analyze.png")
+def graphs_children():
+    global saved_data
+
+    if not saved_data:  # Ensure there is data to process
+        print("No data available to plot.")
+        return
+
+    # Extracting data from instances of Data class
+    power_a = [d.powera for sublist in saved_data for d in sublist]
+    power_c = [d.powerc for sublist in saved_data for d in sublist]
+    tilt_a = [d.tilta for sublist in saved_data for d in sublist]
+    tilt_c = [d.tiltc for sublist in saved_data for d in sublist]
+    time = list(range(len(power_a)))  # Use the length of extracted data
+
+    # Creating DataFrame
+    data = {'time': time, 'power_a': power_a, 'power_c': power_c, 'tilt_a': tilt_a, 'tilt_c': tilt_c}
+    dataframe = pd.DataFrame(data)
+
+    # Plotting the data
+    dataframe.plot(x='time', y=['power_a', 'power_c', 'tilt_a', 'tilt_c'], kind='line', 
+                   title='Gene Count Over Time', 
+                   xlabel='Time (Children Over Time)', 
+                   ylabel='Count', 
+                   grid=True, 
+                   figsize=(8, 7))
+
+    # Saving the plot
+    plt.savefig("analyze_children.png")
+    plt.show()  # To display the graph in interactive environments
+    print("Plot saved to analyze.png")

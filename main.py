@@ -26,7 +26,7 @@ def generation(psize, reproduction_rate):
     time = []
     success_rate = []
     
-    for epoch in range(0, gensize):
+    for epoch in range(1, gensize):
 
        print('Generation', epoch, 'population size', pop.size())
        time.append(epoch)
@@ -68,6 +68,10 @@ count = 0
 # prints into a graph using matplotlib and pandas. 
 
 time, success_rate = generation(100, 10)
+
+analyze.graphs_generations(time)
+analyze.graphs_children()
+
 # data = {'time': time, 'success_rate': success_rate }
 # dataframe = pandas.DataFrame(data)
 # dataframe.plot(x='time', y='success_rate', kind='line', 
